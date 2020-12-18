@@ -1,5 +1,8 @@
 package net.culnane.mqtt;
 
+/**
+ * Basic representation of an MQTT Message.
+ */
 public class Message {
 	
 	private String topic;
@@ -7,7 +10,7 @@ public class Message {
 	private String message;
 	
 	public Message(String topic, String message){
-		this.topic = topic;
+		this.topic = topic.toLowerCase();
 		this.message = message;
 	}
 	
@@ -21,7 +24,7 @@ public class Message {
 
 	@Override
 	public String toString(){
-		return getTopic() + " → " + getMessage();
+		return getTopic() + " " + getMessage();
 	}
 
 }
