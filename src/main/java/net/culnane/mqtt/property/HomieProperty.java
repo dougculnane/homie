@@ -43,7 +43,7 @@ public abstract class HomieProperty {
 	public abstract boolean isSetable();
 
 	public boolean update(Object newValue) {
-		if (this.value.equals(newValue)) {
+		if (this.value != null && this.value.equals(newValue)) {
 			return false;
 		}
 		this.value = newValue;
