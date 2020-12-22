@@ -51,7 +51,7 @@ public class HomieDevice {
 	}
 	private DeviceState state = DeviceState.init;
 	
-	final static protected String HOMIE_VERSION = "3.0";
+	final static protected String HOMIE_VERSION = "4.0";
 	final static public String TOPIC_SEPARATOR = "/";
 	final static protected String TOPIC_PREFIX = "homie";
 	
@@ -101,7 +101,7 @@ public class HomieDevice {
 	
 	
 	/**
-	 * homie / device123 / $homie → 3.0
+	 * homie / device123 / $homie → 4.0
 	 * 
 	 * @return
 	 */
@@ -133,30 +133,40 @@ public class HomieDevice {
 	
 	protected List<Message> getNodeMessages() {
 		List<Message> messages = new ArrayList<Message>();
+		String nodeIds = "";
 		for (HomieNode node : this.nodes) {
-			messages.add(new Message(topicRoot + "$nodes", node.getNodeId()));
-			messages.add(new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + "$name", node.getName()));
-			for (HomieProperty prop : node.getProperties()) {
-				String topicPath = topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR;
-				messages.add(new Message(topicPath + "$properties", prop.getType()));
-				topicPath = topicPath + prop.getType();
-				messages.add(new Message(topicPath, prop.getValue()));
-				topicPath = topicPath + HomieDevice.TOPIC_SEPARATOR;
-				messages.add(new Message(topicPath + "$name", prop.getName()));
-				messages.add(new Message(topicPath + "$unit", prop.getUnit()));
-				messages.add(new Message(topicPath + "$datatype ", prop.getDataType()));
-				messages.add(new Message(topicPath + "$settable ", prop.isSetable() ? "true" : "false" ));
+			if (nodeIds.length() == 0) {
+				nodeIds = node.getNodeId();
+			} else {
+				nodeIds = nodeIds + "," + node.getNodeId();
 			}
+			messages.add(new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + "$name", node.getName()));
+			int properiesPosition = messages.size();
+			String propTypes = "";
+			for (HomieProperty prop : node.getProperties()) {
+				if (propTypes.length() == 0) {
+					propTypes = prop.getType();
+				} else {
+					propTypes = propTypes + "," + prop.getType();
+				}
+				String topicPropPath = topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + prop.getType() + HomieDevice.TOPIC_SEPARATOR;
+				messages.add(new Message(topicPropPath + "$name", prop.getName()));
+				messages.add(new Message(topicPropPath + "$unit", prop.getUnit()));
+				messages.add(new Message(topicPropPath + "$datatype ", prop.getDataType()));
+				messages.add(new Message(topicPropPath + "$settable ", prop.isSetable() ? "true" : "false" ));
+			}
+			messages.add(properiesPosition, new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + "$properties", propTypes));
 		}
+		messages.add(0, new Message(topicRoot + "$nodes", nodeIds));
 		return messages;
 	}
-
+	
 	public List<Message> getStateMessages() {
 		List<Message> messages = new ArrayList<Message>();
 		messages.add(getStateMessage());
 		for (HomieNode node : this.nodes) {
 			for (HomieProperty prop : node.getProperties()) {
-				messages.add(new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + prop.getType(), prop.getValue()));
+				messages.add(new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + prop.getType(), prop.getMessagePayload()));
 			}
 		}
 		return messages;

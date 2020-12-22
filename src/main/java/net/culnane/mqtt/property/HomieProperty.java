@@ -1,17 +1,11 @@
 package net.culnane.mqtt.property;
 
-public abstract class HomieProperty {
+public abstract class HomieProperty<T> {
 	
-	protected Object value;
-
-	public String getValue() {
-		return value == null ? "" : value.toString();
-	}
+	abstract public T getValue();
 	
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
+	abstract public void setValue(T newValue);
+	
 	public abstract String getType();
 
 	public abstract String getName();
@@ -41,13 +35,8 @@ public abstract class HomieProperty {
 	public abstract String getDataType();
 
 	public abstract boolean isSetable();
-
-	public boolean update(Object newValue) {
-		if (this.value != null && this.value.equals(newValue)) {
-			return false;
-		}
-		this.value = newValue;
-		return true;
-	}
 	
+	public String getMessagePayload() {
+		return getValue() == null ? "" : getValue().toString();
+	}
 }

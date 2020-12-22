@@ -16,4 +16,9 @@ public class HomieTemperatureReadingNode extends HomieNode {
 		this(nodeId, name);
 		property.setValue(initValue);
 	}
+	
+	public void updateTemperatureProperty(double newValue) {
+		property.setValue(newValue);
+	}
+	
 }

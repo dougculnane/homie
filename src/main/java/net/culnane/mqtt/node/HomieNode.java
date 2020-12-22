@@ -31,15 +31,5 @@ public class HomieNode {
 	public List<HomieProperty> getProperties() {
 		return properties; 
 	}
-	
-	public boolean update(Object newValue) {
-		boolean changes = false;
-		for (HomieProperty property : properties) {
-			if (property.update(newValue)) {
-				changes = true;
-			}
-		}
-		return changes;
-	}
 
 }

@@ -11,5 +11,9 @@ public class HomiePowerNode extends HomieNode {
 		super(nodeId, name);
 		addProperty(property);
 	}
+	
+	public void updatePowerProperty(double newValue) {
+		property.setValue(newValue);
+	}
 
 }

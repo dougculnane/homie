@@ -1,10 +1,16 @@
 package net.culnane.mqtt.property;
 
+import java.text.DecimalFormat;
+
 /**
  * Temperature sensor reading read only value.
  */
-public class HomieTemperatureReadingProperty extends HomieProperty {
+public class HomieTemperatureReadingProperty extends HomieProperty<Double> {
 
+	DecimalFormat decimalFormat = new DecimalFormat("####.##");
+	
+	private Double value = null;
+	
 	@Override
 	public String getType() {
 		return "temperature";
@@ -28,6 +34,21 @@ public class HomieTemperatureReadingProperty extends HomieProperty {
 	@Override
 	public boolean isSetable() {
 		return false;
+	}
+	
+	@Override
+	public Double getValue() {
+		return this.value;
+	}
+
+	@Override
+	public void setValue(Double newValue) {
+		this.value = newValue;
+	}
+	
+	@Override
+	public String getMessagePayload() {
+		return this.value == null ? "" : decimalFormat.format(value);
 	}
 
 }
