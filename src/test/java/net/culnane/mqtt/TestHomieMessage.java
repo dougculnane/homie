@@ -4,6 +4,8 @@ package net.culnane.mqtt;
 import org.junit.Test;
 
 import org.junit.Assert;
+
+import net.culnane.mqtt.HomieDevice.DeviceState;
 import net.culnane.mqtt.node.HomieTemperatureNode;
 import net.culnane.mqtt.node.HomieTemperatureReadingNode;
 
@@ -33,7 +35,7 @@ public class TestHomieMessage {
 	public void testExample() {
 		
 		HomieDevice device = new HomieDevice("device123", "My device");
-		device.addNode(new HomieTemperatureNode("mythermostat", "My thermostat", 22));
+		device.addNode(new HomieTemperatureNode(device.getTopicRoot(), "mythermostat", "My thermostat", 22.0));
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
@@ -46,8 +48,8 @@ public class TestHomieMessage {
 	public void testDeviceWithThermostatAndTemperatureSensor() {
 		
 		HomieDevice device = new HomieDevice("heatingDevice", "My Heater");
-	    device.addNode(new HomieTemperatureNode("myThermostat", "My Thermostat", 22));
-		device.addNode(new HomieTemperatureReadingNode("insideTemperature", "Inside Temperature", 20));
+	    device.addNode(new HomieTemperatureNode(device.getTopicRoot(), "myThermostat", "My Thermostat", 22.0));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "insideTemperature", "Inside Temperature", 20));
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
@@ -60,12 +62,12 @@ public class TestHomieMessage {
 	public void testDeviceWithManyTemperatureSensors() {
 		
 		HomieDevice device = new HomieDevice("monitoringSystem", "Monitoring System");
-		device.addNode(new HomieTemperatureReadingNode("outside", "Outside Temperature"));
-		device.addNode(new HomieTemperatureReadingNode("bedroom", "Bedroom Temperature", 21));
-		device.addNode(new HomieTemperatureReadingNode("kitchen", "Kitchen Temperature", 23));
-		device.addNode(new HomieTemperatureReadingNode("cellar", "Cellar Temperature", 17));
-		device.addNode(new HomieTemperatureReadingNode("garage", "Garage Temperature", 16));
-		device.addNode(new HomieTemperatureReadingNode("hall", "Hall Temperature", 20));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "outside", "Outside Temperature"));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "bedroom", "Bedroom Temperature", 21));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "kitchen", "Kitchen Temperature", 23));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "cellar", "Cellar Temperature", 17));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "garage", "Garage Temperature", 16));
+		device.addNode(new HomieTemperatureReadingNode(device.getTopicRoot(), "hall", "Hall Temperature", 20));
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
@@ -85,7 +87,7 @@ public class TestHomieMessage {
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
-		device.hasBeenInitialized(true);
+		device.setState(DeviceState.ready);
 		
 		// Device is ready
 		for (Message message: device.getMessages()) {
@@ -93,7 +95,5 @@ public class TestHomieMessage {
 		}
 		Assert.assertEquals("ready", device.getStateMessage().getMessage());
 	}
-		
-	
 	
 }

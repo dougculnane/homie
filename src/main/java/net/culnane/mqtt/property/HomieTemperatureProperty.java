@@ -3,18 +3,12 @@ package net.culnane.mqtt.property;
 /**
  * Basic Temperature value.
  */
-public class HomieTemperatureProperty extends HomieProperty<Integer> {
+public class HomieTemperatureProperty extends HomieProperty<Double> {
 
-	private Integer value = null;
+	private Double value = null;
 	
-	@Override
-	public String getType() {
-		return "temperature";
-	}
-
-	@Override
-	public String getName() {
-		return "Temperature";
+	public HomieTemperatureProperty() {
+		super("temperature", "Temperature");
 	}
 
 	@Override
@@ -24,7 +18,7 @@ public class HomieTemperatureProperty extends HomieProperty<Integer> {
 
 	@Override
 	public String getDataType() {
-		return "integer";
+		return "float";
 	}
 
 	@Override
@@ -33,13 +27,17 @@ public class HomieTemperatureProperty extends HomieProperty<Integer> {
 	}
 
 	@Override
-	public Integer getValue() {
+	public Double getValue() {
 		return value;
 	}
 
 	@Override
-	public void setValue(Integer newValue) {
+	public void setValue(Double newValue) {
 		this.value = newValue;
 	}
 
+	@Override
+	protected void setValueFromMessage(String message) {
+		value = Double.valueOf(message);
+	}
 }

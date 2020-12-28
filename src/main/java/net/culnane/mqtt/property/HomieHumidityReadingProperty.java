@@ -5,19 +5,19 @@ import java.text.DecimalFormat;
 /**
  * Temperature sensor reading read only value.
  */
-public class HomieTemperatureReadingProperty extends HomieProperty<Double> {
+public class HomieHumidityReadingProperty extends HomieProperty<Double> {
 
 	DecimalFormat decimalFormat = new DecimalFormat("####.##");
 	
 	private Double value = null;
 	
-	public HomieTemperatureReadingProperty() {
-		super("temperature", "Temperature");
+	public HomieHumidityReadingProperty() {
+		super("humidity", "Humidity");
 	}
 	
 	@Override
 	public String getUnit() {
-		return "°C";
+		return "%";
 	}
 
 	@Override
@@ -32,22 +32,21 @@ public class HomieTemperatureReadingProperty extends HomieProperty<Double> {
 	
 	@Override
 	public Double getValue() {
-		return value;
+		return this.value;
 	}
 
 	@Override
 	public void setValue(Double newValue) {
-		value = newValue;
+		this.value = newValue;
 	}
 	
 	@Override
 	public String getMessagePayload() {
-		return value == null ? "" : decimalFormat.format(value);
+		return this.value == null ? "" : decimalFormat.format(value);
 	}
-
+	
 	@Override
 	protected void setValueFromMessage(String message) {
 		value = Double.valueOf(message);
 	}
-
 }

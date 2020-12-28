@@ -11,16 +11,10 @@ public class HomiePowerProperty extends HomieProperty<Double> {
 	
 	private Double value = null;
 	
-	@Override
-	public String getType() {
-		return "power";
+	public HomiePowerProperty() {
+		super("power", "Power");
 	}
-
-	@Override
-	public String getName() {
-		return "Power";
-	}
-
+	
 	@Override
 	public String getUnit() {
 		return "W";
@@ -49,6 +43,10 @@ public class HomiePowerProperty extends HomieProperty<Double> {
 	@Override
 	public String getMessagePayload() {
 		return this.value == null ? "" : decimalFormat.format(value);
+	}
+	@Override
+	protected void setValueFromMessage(String message) {
+		value = Double.valueOf(message);
 	}
 	
 }

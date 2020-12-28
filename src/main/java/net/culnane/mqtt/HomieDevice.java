@@ -40,7 +40,7 @@ public class HomieDevice {
 	 * 
 	 * The $state device attribute represents the current state of the device. There are 6 different states:
 	 */
-	enum DeviceState {
+	public enum DeviceState {
 		init,          // device is connected to the MQTT broker, but has not yet sent all Homie messages and is not yet ready to operate. This state is optional, and may be sent if the device takes a long time to initialize, but wishes to announce to consumers that it is coming online.
         ready,         // device is connected to the MQTT broker, has sent all Homie messages and is ready to operate. A Homie Controller can assume default values for all optional topics.
         disconnected,  // device is cleanly disconnected from the MQTT broker. You must send this message before cleanly disconnecting.
@@ -71,10 +71,6 @@ public class HomieDevice {
 				+ this.device + HomieDevice.TOPIC_SEPARATOR;
 	}
 	
-	public void hasBeenInitialized(boolean initDone) {
-		this.state = initDone ? DeviceState.ready : DeviceState.init;
-	}
-	
 	/** 
 	 *  homie / device123 / $homie → 3.0
 	 *  homie / device123 / $name → My device
@@ -99,7 +95,6 @@ public class HomieDevice {
 		return messages;
 	}
 	
-	
 	/**
 	 * homie / device123 / $homie → 4.0
 	 * 
@@ -123,12 +118,16 @@ public class HomieDevice {
 	 * 
 	 * @return
 	 */
-	protected Message getStateMessage() {
+	public Message getStateMessage() {
 		return new Message(topicRoot + "$state", state.toString());
 	}
 
 	public void addNode(HomieNode node) {
 		nodes.add(node);
+	}
+	
+	public void setState(DeviceState state) {
+		this.state = state;
 	}
 	
 	protected List<Message> getNodeMessages() {
@@ -140,7 +139,7 @@ public class HomieDevice {
 			} else {
 				nodeIds = nodeIds + "," + node.getNodeId();
 			}
-			messages.add(new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + "$name", node.getName()));
+			messages.add(new Message(node.getTopicRoot() + "$name", node.getName()));
 			int properiesPosition = messages.size();
 			String propTypes = "";
 			for (HomieProperty prop : node.getProperties()) {
@@ -149,13 +148,15 @@ public class HomieDevice {
 				} else {
 					propTypes = propTypes + "," + prop.getType();
 				}
-				String topicPropPath = topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + prop.getType() + HomieDevice.TOPIC_SEPARATOR;
+				String topicPropPath = node.getTopicRoot() + prop.getType() + HomieDevice.TOPIC_SEPARATOR;
 				messages.add(new Message(topicPropPath + "$name", prop.getName()));
-				messages.add(new Message(topicPropPath + "$unit", prop.getUnit()));
-				messages.add(new Message(topicPropPath + "$datatype ", prop.getDataType()));
-				messages.add(new Message(topicPropPath + "$settable ", prop.isSetable() ? "true" : "false" ));
+				if (prop.getUnit() != null) {
+					messages.add(new Message(topicPropPath + "$unit", prop.getUnit()));
+				}
+				messages.add(new Message(topicPropPath + "$datatype", prop.getDataType()));
+				messages.add(new Message(topicPropPath + "$settable", prop.isSetable() ? "true" : "false" ));
 			}
-			messages.add(properiesPosition, new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + "$properties", propTypes));
+			messages.add(properiesPosition, new Message(node.getTopicRoot() + "$properties", propTypes));
 		}
 		messages.add(0, new Message(topicRoot + "$nodes", nodeIds));
 		return messages;
