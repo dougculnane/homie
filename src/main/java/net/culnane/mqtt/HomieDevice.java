@@ -113,6 +113,10 @@ public class HomieDevice {
 		return new Message(topicRoot + "$name", this.name);
 	}
 	
+	public DeviceState getState() {
+		return state;
+	}
+	
 	/**
 	 * homie / device123 / $state → ready
 	 * 
