@@ -15,6 +15,10 @@ public class HomieHumidityReadingProperty extends HomieProperty<Double> {
 		super("humidity", "Humidity");
 	}
 	
+	public HomieHumidityReadingProperty(String type, String name) {
+		super(type, name);
+	}
+	
 	@Override
 	public String getUnit() {
 		return "%";

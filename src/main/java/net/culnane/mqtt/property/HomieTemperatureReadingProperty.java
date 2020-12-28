@@ -14,6 +14,10 @@ public class HomieTemperatureReadingProperty extends HomieProperty<Double> {
 	public HomieTemperatureReadingProperty() {
 		super("temperature", "Temperature");
 	}
+
+	public HomieTemperatureReadingProperty(String type, String name) {
+		super(type, name);
+	}
 	
 	@Override
 	public String getUnit() {

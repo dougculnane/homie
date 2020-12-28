@@ -11,6 +11,10 @@ public class HomieTemperatureProperty extends HomieProperty<Double> {
 		super("temperature", "Temperature");
 	}
 
+	public HomieTemperatureProperty(String type, String name) {
+		super(type, name);
+	}
+
 	@Override
 	public String getUnit() {
 		return "°C";

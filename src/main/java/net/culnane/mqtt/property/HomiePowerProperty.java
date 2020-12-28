@@ -15,6 +15,10 @@ public class HomiePowerProperty extends HomieProperty<Double> {
 		super("power", "Power");
 	}
 	
+	public HomiePowerProperty(String type, String name) {
+		super(type, name);
+	}
+	
 	@Override
 	public String getUnit() {
 		return "W";

@@ -1,7 +1,5 @@
 package net.culnane.mqtt.property;
 
-import java.text.DecimalFormat;
-
 /**
  * Temperature sensor reading read only value.
  */
