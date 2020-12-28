@@ -170,9 +170,7 @@ public class HomieDevice {
 		List<Message> messages = new ArrayList<Message>();
 		messages.add(getStateMessage());
 		for (HomieNode node : this.nodes) {
-			for (HomieProperty prop : node.getProperties()) {
-				messages.add(new Message(topicRoot + node.getNodeId() + HomieDevice.TOPIC_SEPARATOR + prop.getType(), prop.getMessagePayload()));
-			}
+			messages.addAll(node.getStateMessages());
 		}
 		return messages;
 	}

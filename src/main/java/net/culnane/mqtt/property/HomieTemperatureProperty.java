@@ -1,5 +1,7 @@
 package net.culnane.mqtt.property;
 
+import net.culnane.mqtt.node.HomieNode;
+
 /**
  * Basic Temperature value.
  */
@@ -7,12 +9,12 @@ public class HomieTemperatureProperty extends HomieProperty<Double> {
 
 	private Double value = null;
 	
-	public HomieTemperatureProperty() {
-		super("temperature", "Temperature");
+	public HomieTemperatureProperty(final HomieNode node) {
+		super(node, "temperature", "Temperature");
 	}
 
-	public HomieTemperatureProperty(String type, String name) {
-		super(type, name);
+	public HomieTemperatureProperty(final HomieNode node, String type, String name) {
+		super(node, type, name);
 	}
 
 	@Override

@@ -14,12 +14,13 @@ public class HomieNode {
 	final protected String name;
 	final protected List<HomieProperty> properties = new ArrayList<HomieProperty>();
 	
-	public HomieNode(final String parentDeviceTopicRoot, final String nodeId, final String name) {
-		topicRoot = parentDeviceTopicRoot + nodeId  + HomieDevice.TOPIC_SEPARATOR;
+	public HomieNode(final HomieDevice homieDevice, final String nodeId, final String name) {
+		this.topicRoot = homieDevice.getTopicRoot() + nodeId  + HomieDevice.TOPIC_SEPARATOR;
 		this.nodeId = nodeId.toLowerCase(); 
 		this.name = name;
+		homieDevice.addNode(this);
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -29,6 +30,7 @@ public class HomieNode {
 	}
 	
 	public void addProperty(HomieProperty property) {
+		property.setTopicRoot(this.getTopicRoot());
 		properties.add(property);
 	}
 	
@@ -51,6 +53,14 @@ public class HomieNode {
 
 	public String getTopicRoot() {
 		return topicRoot;
+	}
+
+	public List<Message> getStateMessages() {
+		List<Message> messages = new ArrayList<Message>();
+		for (HomieProperty prop : getProperties()) {
+			messages.add(prop.getStateMessage());
+		}
+		return messages;
 	}
 	
 }

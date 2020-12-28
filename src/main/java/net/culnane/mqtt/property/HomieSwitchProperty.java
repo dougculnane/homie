@@ -1,5 +1,7 @@
 package net.culnane.mqtt.property;
 
+import net.culnane.mqtt.node.HomieNode;
+
 /**
  * Temperature sensor reading read only value.
  */
@@ -7,12 +9,12 @@ public class HomieSwitchProperty extends HomieProperty<Boolean> {
 
 	private Boolean value = null;
 	
-	public HomieSwitchProperty() {
-		super("switch", "Switch");
+	public HomieSwitchProperty(final HomieNode node) {
+		super(node, "switch", "Switch");
 	}
 	
-	public HomieSwitchProperty(String type, String name) {
-		super(type, name);
+	public HomieSwitchProperty(final HomieNode node, String type, String name) {
+		super(node, type, name);
 	}
 
 	@Override

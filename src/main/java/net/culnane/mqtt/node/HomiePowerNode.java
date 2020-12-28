@@ -1,13 +1,15 @@
 package net.culnane.mqtt.node;
 
+import net.culnane.mqtt.HomieDevice;
 import net.culnane.mqtt.property.HomiePowerProperty;
 
 public class HomiePowerNode extends HomieNode {
 
-	private HomiePowerProperty property = new HomiePowerProperty();
+	private HomiePowerProperty property;
 	
-	public HomiePowerNode(final String parentDeviceTopicRoot, String nodeId, String name) {
-		super(parentDeviceTopicRoot, nodeId, name);
+	public HomiePowerNode(final HomieDevice homieDevice, String nodeId, String name) {
+		super(homieDevice, nodeId, name);
+		property = new HomiePowerProperty(this);
 		addProperty(property);
 	}
 	

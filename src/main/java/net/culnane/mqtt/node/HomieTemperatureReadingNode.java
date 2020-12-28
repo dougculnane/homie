@@ -1,20 +1,20 @@
 package net.culnane.mqtt.node;
 
 import net.culnane.mqtt.HomieDevice;
-import net.culnane.mqtt.property.HomieProperty;
 import net.culnane.mqtt.property.HomieTemperatureReadingProperty;
 
 public class HomieTemperatureReadingNode extends HomieNode {
 
-	HomieTemperatureReadingProperty property = new HomieTemperatureReadingProperty();
+	HomieTemperatureReadingProperty property;
 
-	public HomieTemperatureReadingNode(final String parentDeviceTopicRoot, String nodeId, String name) {
-		super(parentDeviceTopicRoot, nodeId, name);
+	public HomieTemperatureReadingNode(final HomieDevice homieDevice, String nodeId, String name) {
+		super(homieDevice, nodeId, name);
+		property = new HomieTemperatureReadingProperty(this);
 		this.addProperty(property);
 	}
 	
-	public HomieTemperatureReadingNode(final String parentDeviceTopicRoot, String nodeId, String name, double initValue) {
-		this(parentDeviceTopicRoot, nodeId, name);
+	public HomieTemperatureReadingNode(final HomieDevice homieDevice, String nodeId, String name, double initValue) {
+		this(homieDevice, nodeId, name);
 		property.setValue(initValue);
 	}
 	

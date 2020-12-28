@@ -2,6 +2,8 @@ package net.culnane.mqtt.property;
 
 import java.text.DecimalFormat;
 
+import net.culnane.mqtt.node.HomieNode;
+
 /**
  * Temperature sensor reading read only value.
  */
@@ -11,12 +13,12 @@ public class HomieHumidityReadingProperty extends HomieProperty<Double> {
 	
 	private Double value = null;
 	
-	public HomieHumidityReadingProperty() {
-		super("humidity", "Humidity");
+	public HomieHumidityReadingProperty(final HomieNode node) {
+		super(node, "humidity", "Humidity");
 	}
 	
-	public HomieHumidityReadingProperty(String type, String name) {
-		super(type, name);
+	public HomieHumidityReadingProperty(final HomieNode node, String type, String name) {
+		super(node, type, name);
 	}
 	
 	@Override

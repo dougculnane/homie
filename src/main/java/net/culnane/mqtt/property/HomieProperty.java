@@ -1,14 +1,25 @@
 package net.culnane.mqtt.property;
 
+import net.culnane.mqtt.Message;
+import net.culnane.mqtt.node.HomieNode;
+
 public abstract class HomieProperty<T> {
 	
 	private String type = "";
 	
 	private String name = "";
-
-	public HomieProperty(String type, String name) {
+	
+	private String topicRoot;
+	
+	public HomieProperty(final HomieNode node, String type, String name) {
+		this.topicRoot = node.getTopicRoot() + type;
 		this.type = type;
-		this.name = name;	
+		this.name = name;
+		node.addProperty(this);
+	}
+	
+	public void setTopicRoot(final String parentNodeTopicRoot) {
+		this.topicRoot = parentNodeTopicRoot + type;
 	}
 	
 	public String getType() {
@@ -59,5 +70,9 @@ public abstract class HomieProperty<T> {
 		}
 	}
 
-	protected abstract void setValueFromMessage(String message);;
+	protected abstract void setValueFromMessage(String message);
+
+	public Message getStateMessage() {
+		 return new Message(topicRoot, getMessagePayload());
+	}
 }

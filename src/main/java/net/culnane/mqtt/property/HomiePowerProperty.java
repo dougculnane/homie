@@ -2,6 +2,8 @@ package net.culnane.mqtt.property;
 
 import java.text.DecimalFormat;
 
+import net.culnane.mqtt.node.HomieNode;
+
 /**
  * Basic Temperature value.
  */
@@ -11,12 +13,12 @@ public class HomiePowerProperty extends HomieProperty<Double> {
 	
 	private Double value = null;
 	
-	public HomiePowerProperty() {
-		super("power", "Power");
+	public HomiePowerProperty(final HomieNode node) {
+		super(node, "power", "Power");
 	}
 	
-	public HomiePowerProperty(String type, String name) {
-		super(type, name);
+	public HomiePowerProperty(final HomieNode node, String type, String name) {
+		super(node, type, name);
 	}
 	
 	@Override
