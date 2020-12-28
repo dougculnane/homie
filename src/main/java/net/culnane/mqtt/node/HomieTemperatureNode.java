@@ -1,6 +1,5 @@
 package net.culnane.mqtt.node;
 
-import net.culnane.mqtt.HomieDevice;
 import net.culnane.mqtt.property.HomieTemperatureProperty;
 
 public class HomieTemperatureNode extends HomieNode {
