@@ -10,7 +10,6 @@ public class HomieTemperatureNode extends HomieNode {
 	public HomieTemperatureNode(final HomieDevice homieDevice, String nodeId, String name) {
 		super(homieDevice, nodeId, name);
 		property = new HomieTemperatureProperty(this);
-		this.addProperty(property);
 	}
 	
 	public HomieTemperatureNode(final HomieDevice homieDevice, String nodeId, String name, Double initialValue) {

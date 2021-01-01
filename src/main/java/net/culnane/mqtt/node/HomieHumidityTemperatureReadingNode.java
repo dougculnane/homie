@@ -13,8 +13,6 @@ public class HomieHumidityTemperatureReadingNode extends HomieNode {
 		super(homieDevice, nodeId, name);
 		propertyHum = new HomieHumidityReadingProperty(this);
 		propertyTemp = new HomieTemperatureReadingProperty(this);
-		this.addProperty(propertyHum);
-		this.addProperty(propertyTemp);
 	}
 	
 	public void updateHumidityProperty(double newValue) {

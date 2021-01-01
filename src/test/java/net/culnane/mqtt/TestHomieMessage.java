@@ -35,7 +35,7 @@ public class TestHomieMessage {
 	public void testExample() {
 		
 		HomieDevice device = new HomieDevice("device123", "My device");
-		device.addNode(new HomieTemperatureNode(device, "mythermostat", "My thermostat", 22.0));
+		new HomieTemperatureNode(device, "mythermostat", "My thermostat", 22.0);
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
@@ -48,8 +48,8 @@ public class TestHomieMessage {
 	public void testDeviceWithThermostatAndTemperatureSensor() {
 		
 		HomieDevice device = new HomieDevice("heatingDevice", "My Heater");
-	    device.addNode(new HomieTemperatureNode(device, "myThermostat", "My Thermostat", 22.0));
-		device.addNode(new HomieTemperatureReadingNode(device, "insideTemperature", "Inside Temperature", 20));
+	    new HomieTemperatureNode(device, "myThermostat", "My Thermostat", 22.0);
+		new HomieTemperatureReadingNode(device, "insideTemperature", "Inside Temperature", 20);
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
@@ -62,12 +62,12 @@ public class TestHomieMessage {
 	public void testDeviceWithManyTemperatureSensors() {
 		
 		HomieDevice device = new HomieDevice("monitoringSystem", "Monitoring System");
-		device.addNode(new HomieTemperatureReadingNode(device, "outside", "Outside Temperature"));
-		device.addNode(new HomieTemperatureReadingNode(device, "bedroom", "Bedroom Temperature", 21));
-		device.addNode(new HomieTemperatureReadingNode(device, "kitchen", "Kitchen Temperature", 23));
-		device.addNode(new HomieTemperatureReadingNode(device, "cellar", "Cellar Temperature", 17));
-		device.addNode(new HomieTemperatureReadingNode(device, "garage", "Garage Temperature", 16));
-		device.addNode(new HomieTemperatureReadingNode(device, "hall", "Hall Temperature", 20));
+		new HomieTemperatureReadingNode(device, "outside", "Outside Temperature");
+		new HomieTemperatureReadingNode(device, "bedroom", "Bedroom Temperature", 21);
+		new HomieTemperatureReadingNode(device, "kitchen", "Kitchen Temperature", 23);
+		new HomieTemperatureReadingNode(device, "cellar", "Cellar Temperature", 17);
+		new HomieTemperatureReadingNode(device, "garage", "Garage Temperature", 16);
+		new HomieTemperatureReadingNode(device, "hall", "Hall Temperature", 20);
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}

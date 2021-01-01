@@ -10,7 +10,6 @@ public class HomiePowerNode extends HomieNode {
 	public HomiePowerNode(final HomieDevice homieDevice, String nodeId, String name) {
 		super(homieDevice, nodeId, name);
 		property = new HomiePowerProperty(this);
-		addProperty(property);
 	}
 	
 	public void updatePowerProperty(double newValue) {
