@@ -6,8 +6,12 @@ import org.junit.Test;
 import org.junit.Assert;
 
 import net.culnane.mqtt.HomieDevice.DeviceState;
+import net.culnane.mqtt.node.HomieHumidityTemperatureReadingNode;
+import net.culnane.mqtt.node.HomieNode;
 import net.culnane.mqtt.node.HomieTemperatureNode;
 import net.culnane.mqtt.node.HomieTemperatureReadingNode;
+import net.culnane.mqtt.property.HomieSwitchProperty;
+import net.culnane.mqtt.property.HomieTemperatureProperty;
 
 /**
  * Unit tests and example of how to use the devices.
@@ -82,6 +86,37 @@ public class TestHomieMessage {
 		// Init the device.
 		HomieDevice device = new HomieDevice("newdevice", "New Device");
 		Assert.assertEquals("init", device.getStateMessage().getMessage());
+		
+		// here you would send messages to MQTT for configuration then call hasBeenInitialized.
+		for (Message message: device.getMessages()) {
+			System.out.println(message.toString());
+		}
+		device.setState(DeviceState.ready);
+		
+		// Device is ready
+		for (Message message: device.getMessages()) {
+			System.out.println(message.toString());
+		}
+		Assert.assertEquals("ready", device.getStateMessage().getMessage());
+	}
+	
+	/**
+	 * Test the device life-cycle.
+	 */
+	@Test
+	public void testExampleApplication() {
+		
+		// Init the device.
+		HomieDevice device = new HomieDevice("hotwatertank", "Hot Water Tank Device");
+		HomieNode tankNode = new HomieNode(device, "watertank", "Water Heater Tank");
+		HomieTemperatureProperty waterTemperature = new HomieTemperatureProperty(tankNode, "water", "Water Temperature");
+		
+		HomieSwitchProperty waterHeaterSwitch = new HomieSwitchProperty(tankNode, "waterheater", "Water Temperature");
+		
+		HomieHumidityTemperatureReadingNode roomSensor = new HomieHumidityTemperatureReadingNode(device, "sensor", "Room Sensor");
+		
+		
+		
 		
 		// here you would send messages to MQTT for configuration then call hasBeenInitialized.
 		for (Message message: device.getMessages()) {
