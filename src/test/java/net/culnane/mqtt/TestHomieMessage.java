@@ -12,6 +12,7 @@ import net.culnane.mqtt.node.HomieTemperatureNode;
 import net.culnane.mqtt.node.HomieTemperatureReadingNode;
 import net.culnane.mqtt.property.HomieSwitchProperty;
 import net.culnane.mqtt.property.HomieTemperatureProperty;
+import net.culnane.mqtt.property.HomieTemperatureReadingProperty;
 
 /**
  * Unit tests and example of how to use the devices.
@@ -108,27 +109,32 @@ public class TestHomieMessage {
 		
 		// Init the device.
 		HomieDevice device = new HomieDevice("hotwatertank", "Hot Water Tank Device");
-		HomieNode tankNode = new HomieNode(device, "watertank", "Water Heater Tank");
-		HomieTemperatureProperty waterTemperature = new HomieTemperatureProperty(tankNode, "water", "Water Temperature");
-		
-		HomieSwitchProperty waterHeaterSwitch = new HomieSwitchProperty(tankNode, "waterheater", "Water Temperature");
-		
+		HomieNode tankNode = new HomieNode(device, "watertank", "Water Tank");
+		HomieTemperatureReadingProperty waterTemperature = new HomieTemperatureReadingProperty(tankNode, "water", "Water Temperature");
+		HomieTemperatureProperty thermostat = new HomieTemperatureProperty(tankNode, "thermostat", "Water Thermostat");
+		HomieSwitchProperty waterHeaterSwitch = new HomieSwitchProperty(tankNode, "heaterswitch", "Heater Switch");
 		HomieHumidityTemperatureReadingNode roomSensor = new HomieHumidityTemperatureReadingNode(device, "sensor", "Room Sensor");
 		
 		
-		
-		
-		// here you would send messages to MQTT for configuration then call hasBeenInitialized.
+		// Here you send messages to MQTT for configuration then.
+		device.setState(DeviceState.ready);
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
-		device.setState(DeviceState.ready);
+		
+		// handle control messages
+		tankNode.handleMessage(new Message("homie/hotwatertank/watertank/thermostat/set", "20.0"));
+		
+		// read sensors and perform logic...
+		waterTemperature.setValue(34.5);
+		waterHeaterSwitch.setValue(thermostat.getValue() > waterTemperature.getValue());
+		roomSensor.updateHumidityProperty(76);
+		roomSensor.updateTemperatureProperty(18);
 		
 		// Device is ready
-		for (Message message: device.getMessages()) {
+		for (Message message: device.getStateMessages()) {
 			System.out.println(message.toString());
 		}
-		Assert.assertEquals("ready", device.getStateMessage().getMessage());
 	}
 	
 }
