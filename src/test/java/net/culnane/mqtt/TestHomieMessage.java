@@ -116,22 +116,22 @@ public class TestHomieMessage {
 		HomieHumidityTemperatureReadingNode roomSensor = new HomieHumidityTemperatureReadingNode(device, "sensor", "Room Sensor");
 		
 		
-		// Here you send messages to MQTT for configuration then.
+		// Send announcement messages to MQTT.
 		device.setState(DeviceState.ready);
 		for (Message message: device.getMessages()) {
 			System.out.println(message.toString());
 		}
 		
-		// handle control messages
+		// Handle control messages
 		tankNode.handleMessage(new Message("homie/hotwatertank/watertank/thermostat/set", "20.0"));
 		
-		// read sensors and perform logic...
+		// Read sensors and perform logic...
 		waterTemperature.setValue(34.5);
 		waterHeaterSwitch.setValue(thermostat.getValue() > waterTemperature.getValue());
 		roomSensor.updateHumidityProperty(76);
 		roomSensor.updateTemperatureProperty(18);
 		
-		// Device is ready
+		// Report state
 		for (Message message: device.getStateMessages()) {
 			System.out.println(message.toString());
 		}
